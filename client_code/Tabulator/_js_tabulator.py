@@ -90,7 +90,7 @@ Object.setPrototypeOf(Component.prototype, new Proxy(target, {
 )
 
 for component in "column", "cell", "row", "calc":
-    support_snake(TabulatorModule[component.capitalize() + "Component"], component)
+    support_snake(TabulatorModule[f"{component.capitalize()}Component"], component)
 
 
 def filter_wrapper(f, params):

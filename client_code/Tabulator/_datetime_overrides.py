@@ -26,10 +26,7 @@ def dt_formatter(dt_type, name, default_format):
                 val = val.astimezone(tz)
 
         out = params.get("format") or params.get("outputFormat", "%x")
-        if out == "iso" or out == "isoformat":
-            return val.isoformat()
-        else:
-            return val.strftime(out)
+        return val.isoformat() if out in ["iso", "isoformat"] else val.strftime(out)
 
     return formatter
 

@@ -32,7 +32,7 @@ def _ignore_resize_observer_error_handler(e):
     # - 'ResizeObserver loop limit exceeded', and
     # - 'ResizeObserver loop ocmpleted with undelivered notifications'
     msg = e.get("message", "")
-    if "ResizeObserver loop" in msg or "Script error." == msg:
+    if "ResizeObserver loop" in msg or msg == "Script error.":
         e.stopPropagation()
         e.stopImmediatePropagation()
 
@@ -91,7 +91,7 @@ def _inject_theme(theme):
         return
     link = document.createElement("link")
     if theme in _themes:
-        theme = "_" + theme if theme != "standard" else ""
+        theme = f"_{theme}" if theme != "standard" else ""
         theme = f"https://cdn.jsdelivr.net/npm/tabulator-tables@5.1.7/dist/css/tabulator{theme}.min.css"
     link.href = theme
     link.rel = "stylesheet"
@@ -117,13 +117,13 @@ def _to_module(modname):
 # from anvil-extras
 def _spacing_property(a_b):
     def getter(self):
-        return getattr(self, "_spacing_" + a_b, "")
+        return getattr(self, f"_spacing_{a_b}", "")
 
     def setter(self, value):
         self._dom_node.classList.remove(
-            f"anvil-spacing-{a_b}-{getattr(self, '_spacing_' + a_b, '')}"
+            f"anvil-spacing-{a_b}-{getattr(self, f'_spacing_{a_b}', '')}"
         )
         self._dom_node.classList.add(f"anvil-spacing-{a_b}-{value}")
-        setattr(self, "_spacing_" + a_b, value)
+        setattr(self, f"_spacing_{a_b}", value)
 
     return property(getter, setter, None, a_b)

@@ -179,9 +179,7 @@ class AppTableLoader(AbstractModule):
     def columns_loaded(self):
         cols = self.table.columnManager.columns
         field_structures = {(self.id_field,)}
-        field_structures |= set(
-            tuple(c.fieldStructure) for c in cols if c.fieldStructure
-        )
+        field_structures |= {tuple(c.fieldStructure) for c in cols if c.fieldStructure}
         self.getter = self.table.options.getter or getitem
         self.field_getters = [
             feildgetter(*fields, getter=self.getter) for fields in field_structures
@@ -232,8 +230,7 @@ class AppTableLoader(AbstractModule):
             return prev or row.data
         data = row.data
         index = data[self.id_field]
-        retrieved = self.id_cache[index]
-        return retrieved
+        return self.id_cache[index]
 
     def get_py_source(self, row_or_cell):
         row = row_or_cell.get("row", row_or_cell)
